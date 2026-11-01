@@ -38,7 +38,8 @@ Target submission: **16:30 London, 1 November 2026**. Deadline: **17:00**. Featu
 - [ ] Full invented-character UI journey through fitting/export (generation API verified separately).
 - [ ] Optional native desktop installation/playback, only if Shane explicitly requests it after preview.
 - [ ] Fresh-clone installation on another machine.
-- [ ] Public hosting, only if requested; no deployment claimed.
+- [x] Temporary public HTTPS preview explicitly approved; signed-out page access and a real Decisions request verified. URL is in README.
+- [ ] Durable public hosting: current preview depends on the Mac staying awake, connected, and running the server/tunnel.
 - [ ] Record a ≤90-second video showing capture/character creation, expression preview and native export.
 - [ ] Include a concrete Codex contribution: browser-discovered eye/mouth mesh-hole correction and independent native neutral-slot validation.
 - [ ] Add accessible final video/demo links to README and check signed-out access.

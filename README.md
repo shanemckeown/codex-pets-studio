@@ -86,4 +86,4 @@ The demo portrait is synthetic. No Aestheticc source, patient records, vault not
 
 [ATTRIBUTION.md](ATTRIBUTION.md) credits libraries, model and generated artwork. [CODEX_LOG.md](CODEX_LOG.md) records actual implementation, corrections and checks. [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) tracks the remaining event deliverables.
 
-**Demo video:** pending (maximum 90 seconds). **Public live demo:** not deployed. **Repository:** [shanemckeown/codex-pets-studio](https://github.com/shanemckeown/codex-pets-studio).
+**Demo video:** pending (maximum 90 seconds). **Temporary public HTTPS preview:** [Open Codex Pets Studio](https://shoppers-colleague-quarterly-science.trycloudflare.com). No email login is required; signed-out browser access and a real Decisions request were verified on 1 November 2026. This preview runs through the developer's Mac, which must remain awake and connected; it is not a durable hosted deployment. **Repository:** [shanemckeown/codex-pets-studio](https://github.com/shanemckeown/codex-pets-studio).

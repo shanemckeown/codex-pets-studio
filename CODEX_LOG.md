@@ -77,3 +77,9 @@ Current official OpenAI Decisions, image-generation and speech-to-text guides; G
 - Typecheck passed. A browser regression with an iPhone user agent, synthetic canvas-backed MediaStream and deliberately unresolved capture-check requests verified: one camera request across multiple capture/approval/retake steps, frozen image review, live next instruction, live same-instruction retake, enabled approval while AI remained pending, three canceled client checks, live tracks between shots and stopped tracks on Home. Action Y stayed 705.203 px across steps at 390×844, with no document overflow.
 - Separate checks verified equal live/review mirror transforms, unmirrored upload display, camera release on explicit upload, and no camera restart after upload approval. These are simulated browser camera tests, not physical device verification or new real API evaluations.
 - Parent independent browser review also passed: one camera request, zero stops during capture/approval/retake, one stop on Home, frozen review mirroring, and immediate approval with two unresolved AI requests. No 390×844 overflow. The latest isolated production build passed after review.
+
+## Public HTTPS phone preview — 14:49 London
+
+- Shane explicitly approved replacing email-gated testing with a temporary public HTTPS preview. Stopped the old protected tunnel and started a new HTTP/2 tunnel to the latest local production build.
+- Public preview: https://shoppers-colleague-quarterly-science.trycloudflare.com . Fresh browser context required no account or email sign-in: page HTTP 200, secure context true, camera API present, and real Decisions request HTTP 200 with the expected waiting state.
+- This is a temporary Mac-backed preview, not a durable hosted deployment. The Mac/server/tunnel must remain running and connected. Physical iPhone camera use still requires the user's device check; camera API availability is not a hardware test.
