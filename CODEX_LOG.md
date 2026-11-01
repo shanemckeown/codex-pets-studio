@@ -62,3 +62,9 @@ Current official OpenAI Decisions, image-generation and speech-to-text guides; G
 - Added a forehead-to-chin oval over live webcam and photo review, with a dimmed surround. The guide follows the displayed media bounds, including letterboxed landscape webcams, and is never baked into the captured photo.
 - Enabled explicit local-network testing with `npm run dev:lan`, documented native mobile camera versus HTTPS in-page camera behavior, and verified the LAN page, JS/model/WASM assets and a real Decisions request.
 - Validation: TypeScript passed; browser upload/review at 375×667 and simulated 640×480 webcam at 390×844 kept the guide within the visible image with no page overflow. These were synthetic fixtures, not physical camera hardware tests.
+
+## 2026-11-01 — Keep mobile primary capture inside the framing guide
+
+- Removed the mobile user-agent shortcut from Take photo: secure mobile browsers now use the in-page camera and retain the oval overlay. The native Camera app remains an explicitly chosen secondary alternative.
+- Insecure HTTP and denied camera permission now produce accessible guidance instead of automatically launching an OS file/camera picker. Phone documentation now makes the HTTPS requirement explicit.
+- Typecheck passed. Browser QA with an iPhone user agent and a synthetic canvas-backed MediaStream passed: live oval visible, in-page snapshot retained the review step, explicit approval advanced, camera tracks stopped, and zero file choosers opened. Separate actual LAN HTTP and simulated permission-denied checks both displayed the appropriate error with zero file choosers. These are browser simulations, not physical iPhone camera verification.
