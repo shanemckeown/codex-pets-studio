@@ -1,70 +1,76 @@
-# Charted
+# Codex Pets Studio
 
-Voice-assisted injection charting: scan a demo product label, dictate sites and amounts, adjust numbered points, and print a treatment record with batch details.
+Turn a set of face photos into an expressive desktop companion: guided references → estimated 3D facial surface → animation previews → downloadable native desktop pet package.
 
-Built for the [DevDay Exchange Community Hackathon, London](https://luma.com/dde-ldn-hack), 1 November 2026, by Shane McKeown with Codex.
+Built by Shane McKeown with Codex during the [DevDay Exchange Community Hackathon, London](https://luma.com/dde-ldn-hack), 1 November 2026. The initial charting idea and subsequent face-studio exploration are preserved in the Git history and earlier briefs; [the pet-studio brief](docs/PET_STUDIO_BRIEF.md) defines the implemented direction.
 
-**Status:** repository and build brief prepared. Application implementation has not started. This README will be updated with verified setup instructions and working links as milestones finish.
+**Verified locally:** production build, eight unit tests, mobile approval/retake flow, real Decisions command and capture checks, real character-generation API, Gaussian export and independent native v2 atlas validation. See [CODEX_LOG.md](CODEX_LOG.md) for exact evidence and limits. No public deployment, native installation or submitted video is claimed.
 
-## Who it's for and the problem
+## Run locally
 
-Aesthetic practitioners need to record treatment sites, amounts and product batches. Charted explores recording those details by voice while keeping the practitioner in control of the chart.
+Use a recent Node.js release supported by Next.js and npm. Install the versions in `package-lock.json`:
 
-The demo uses a fixed face outline and synthetic labels named **Botox** and **Filler**. The practitioner supplies every site and amount; the app does not recommend treatments or doses.
-
-## Demo video link
-
-Pending: a working demo video of no more than 90 seconds. The final link must open without a permission request.
-
-## Live demo
-
-Pending: a public demo URL. No working hosted application is claimed yet.
-
-## How to run
-
-The repository currently contains documentation only; there is no runnable app or package manifest yet.
-
-After scaffolding, this section will contain tested installation, environment setup, development, build and test commands. Keep `OPENAI_API_KEY` server-side in a local ignored environment file; `.env.example` contains only a blank placeholder.
-
-The planned `/demo-label` page will display real generated GS1 DataMatrix barcodes on a phone or laptop for scanning with the other device. PNG upload will provide a fallback.
-
-## How it works
-
-Planned flow:
-
-```mermaid
-flowchart LR
-  Label[Demo label] --> Decoder[Decode DataMatrix and GS1 fields]
-  Decoder --> Product[Active product and batch]
-  Voice[Recorded speech] --> Transcript[Transcription]
-  Transcript --> Parser[Local edit grammar or structured parser]
-  Product --> Chart[Numbered face chart]
-  Parser --> Chart
-  Chart --> Record[Printable record and JSON]
+```sh
+npm ci
+cp .env.example .env.local
+# Set OPENAI_API_KEY in .env.local for AI checks, commands and transcription.
+npm run dev
 ```
 
-Movement uses explicit commands such as “move point 5 up 3 steps”. Deletion first asks “Are you sure?” and requires a separate second delete command. Each point preserves its product and batch when another label is scanned.
+Open [the local studio](http://127.0.0.1:3000). Landmark fitting, manual animation previews and export run in the browser without an API key. Decisions checks and typed/voice authoring require a server-side key and access to the selected API models. Missing API access produces an explicit error; manual state controls remain available.
 
-## How Codex helped
+```sh
+npm test
+npm run typecheck
+npm run build
+# With the dev server running and a configured key: real, billable Decisions evals
+node scripts/api-eval.mjs
+```
 
-See [CODEX_LOG.md](CODEX_LOG.md) for dated milestones, actual problems and fixes, documentation sources and verification results. Before submission, this section will identify one concrete implemented and tested example.
+The MediaPipe model and WASM runtime are served locally from `public/`. API keys remain on the server and must never be prefixed with `NEXT_PUBLIC_`.
 
-## Built today vs existing
+## Create a pet
 
-- **Before the 11:00 build window:** idea, domain knowledge, build brief and repository preparation. No application implementation is included in the initial commit.
-- **During the build window:** implementation milestones and commits will be recorded in the log.
-- **Existing project code:** none copied into this repository. The brief uses field names intended to ease a later Aestheticc integration; the hackathon app is standalone.
-- **Existing code and assets:** no libraries have been installed and no artwork has been added yet. Planned dependencies are Next.js, React, TypeScript, Tailwind CSS, the OpenAI Node SDK, zxing-wasm, bwip-js and Vitest. Record installed versions, upstream sources and verified licences here when they are added, along with any other templates or assets actually used.
-- **Author contribution:** concept, clinical workflow knowledge, product decisions and demo by Shane McKeown; implementation assistance by Codex.
+Choose one of two paths in the fullscreen studio:
 
-## Synthetic data notice
+- **Use my face:** seven sequential captures: neutral front, slight subject-left/right, gentle smile, eyes gently closed, raised eyebrows, and gentle frown. Use the same consenting subject, framing and lighting. The fixed capture control opens a webcam on a secure desktop context, or the native camera picker on mobile. A separate Photos option is always available. Each capture is checked by OpenAI, then waits for your explicit **Photo approved** click. You can retake it; AI advice never replaces your approval. Further-side references are optional.
+- **Invent a character:** describe an original humanoid face and explicitly generate one portrait. The server uses GPT Image; there are no automatic paid retries. The same face renderer and export pipeline follow. Unsupported creatures may fail face fitting; edit the prompt and explicitly try again.
 
-All demo identities, barcode fixtures and batches are synthetic. “Botox” and “Filler” are display categories for the demo, not proof of a genuine product's identity. Generated labels must visibly say “SYNTHETIC DEMO PRODUCT · NOT FOR CLINICAL USE”. No patient records, private Aestheticc code, credentials or real clinical data belong in this repository or demo.
+After fitting, inspect the nine activity states, turn the face, choose a photo or Gaussian surface, or use typed/voice intent such as “look curious”. Then name the pet, create the package, and download its ZIP.
 
-## Limitations
+The synthetic demo uses one generated neutral portrait. Its procedural expression changes are clearly labelled approximations. It does not contain genuine smile, closed-eye or frown reference photos. Generated characters have the same single-portrait limitation. The exported surface includes the facial oval, without hair, ears, horns or a full body.
 
-This is a hackathon demonstration, not a validated clinical record system. The planned app has one local browser session, no accounts or database, and no real product catalogue. Voice processing requires network access and an API key. Clinical advice and dose suggestions are outside scope.
+## How the face works
 
-## Build and submission
+MediaPipe estimates corresponding facial landmarks. The neutral front photo drives a textured facial mesh. Captured expression references provide observed landmark geometry and photo textures for the matching animation; one reference is blended at a time. Expression geometry is registered to a shared eye/chin basis, position and scale. Real-face mode disables procedural facial deformation entirely; expressions come from the supplied captures. Side references contribute registered texture in turned views, while the neutral geometry supplies the surface, avoiding a second baked head rotation. Further-side references are used only at larger preview rotations.
 
-The [build brief](docs/CODEX_BRIEF.md) defines the journey and acceptance checks. The [submission checklist](SUBMISSION_CHECKLIST.md) tracks remaining deliverables and distinguishes verified event details from the supplied brief.
+The **Gaussian surface** option uses photo-coloured anisotropic 3D Gaussian surfels sampled on the estimated landmark surface. The renderer projects each 3D covariance into a screen ellipse and depth-sorts alpha compositing. Preview and exported sprites use the same renderer. This is an **estimated front/partial-side facial surface**, not a complete head reconstruction, learned multi-view Gaussian reconstruction, measured anatomy, or predicted treatment outcome. A single photograph cannot reveal hidden mouth, eyelid or side-of-head detail. The shared smooth region weights and geometry functions are kept separate from the renderer for later artistic or cosmetic illustration work; there are no treatment or dose recommendations.
+
+Decisions is used during **authoring**: automatic capture checks and a finite animation-intent router. Voice is transcribed server-side and follows the same Decisions path. The exported native pet has no embedded API calls or arbitrary Codex event hooks; the desktop app supplies its existing activity playback.
+
+## Desktop export contract
+
+The ZIP contains `pet.json`, `spritesheet.png`, and `INSTALL.txt`.
+
+- Native desktop **v2**: `spriteVersionNumber: 2`.
+- Transparent PNG **1536×2288**, 8 columns ×11 rows, **192×208** cells.
+- Activity rows: idle6, running-right8, running-left8, waving4, jumping5, failed8, waiting6, running6, review6.
+- Last two rows: sixteen clockwise gaze poses starting **up**, then right, down, left. Neutral front uses idle.
+- Exactly **74 nonempty cells** (73 animation/gaze frames plus the v2 neutral frame at row0,column6) and **14 transparent unused cells**. Export checks dimensions, occupancy and boundary clipping before offering a download.
+- Preview and export share the same pose function and facial renderer. Preview uses the native per-frame durations.
+
+Unzip into a new folder under `~/.codex/pets/<pet-id>/` (or `$CODEX_HOME/pets/<pet-id>/`), keeping `pet.json` and `spritesheet.png` together. In desktop Settings → Pets, refresh and select the pet. The studio does not install or select it. This desktop v2 contract is distinct from the web pet-upload format.
+
+The package contract was checked against the locally installed `hatch-pet` references and a local v2 manifest. See [official Pets documentation](https://learn.chatgpt.com/docs/pets) for desktop creation and state behavior; it does not document every local v2 field.
+
+## Privacy and limits
+
+Photos and recordings stay in browser memory during authoring; the app uses no local storage, database or accounts. Each captured photo is sent to OpenAI for a suggested capture check, with this disclosed before capture. Voice transcription sends the recorded audio to OpenAI. Export intentionally saves rendered likeness frames in the downloaded package. Replacing the neutral photo clears old expression references and generated output. Reloading the page clears the working set.
+
+The demo portrait is synthetic. No Aestheticc source, patient records, vault notes or credentials were copied into this project. Use your own face or photos of someone who has agreed. Webcam and native camera-picker controls are implemented. A deferred-camera-stream lifecycle test passed; actual laptop/iPhone hardware capture and live microphone recording have not been verified in this session. Native installation remains untested; the bundled native validator passed the generated Gaussian atlas, which is stronger evidence than dimensions alone but does not prove playback in the app. Distinct real captured-expression transitions still need visual assessment with a consenting subject’s actual photo set; UI tests used a synthetic neutral fixture.
+
+## Credits, evidence and submission
+
+[ATTRIBUTION.md](ATTRIBUTION.md) credits libraries, model and generated artwork. [CODEX_LOG.md](CODEX_LOG.md) records actual implementation, corrections and checks. [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) tracks the remaining event deliverables.
+
+**Demo video:** pending (maximum 90 seconds). **Public live demo:** not deployed. **Repository:** [shanemckeown/codex-pets-studio](https://github.com/shanemckeown/codex-pets-studio).

@@ -1,0 +1,3 @@
+# Preserve upstream MediaPipe runtime bytes and keep generated code out of reviews.
+public/mediapipe/* linguist-vendored
+public/mediapipe/*.js -whitespace

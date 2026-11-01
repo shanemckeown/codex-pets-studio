@@ -1,6 +1,7 @@
 # Dependencies and generated output
 node_modules/
 .next/
+.next-production/
 out/
 dist/
 coverage/
@@ -22,6 +23,7 @@ service-account*.json
 *.log
 playwright-report/
 test-results/
+.playwright-mcp/
 .codex/
 .claude/
 
