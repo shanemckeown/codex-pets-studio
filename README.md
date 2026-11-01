@@ -29,6 +29,19 @@ node scripts/api-eval.mjs
 
 The MediaPipe model and WASM runtime are served locally from `public/`. API keys remain on the server and must never be prefixed with `NEXT_PUBLIC_`.
 
+## Test on your phone
+
+Connect the phone and Mac to the same local network (including a phone hotspot). On the Mac, run:
+
+```sh
+# Replace this address if the Mac changes networks.
+CODEX_PETS_LAN_HOST=172.20.10.3 npm run dev:lan
+```
+
+Open **http://172.20.10.3:3000** on the phone. The server binds the local network instead of only localhost; no public tunnel or deployment is created. `CODEX_PETS_LAN_HOST` permits only that exact additional development origin for Next.js assets/HMR. Stop the server with Ctrl-C when finished, or return to `npm run dev` for localhost-only access.
+
+On a phone, **Take photo / Camera app** uses the native camera picker; **Choose photo** opens Photos/files. The oval framing guide appears in the in-page webcam view and photo review; the phone’s system camera picker itself is unchanged. These remain available on a plain local HTTP address. Browsers restrict live webcam and microphone APIs to secure contexts, so phone voice/live-video capture is unavailable over this HTTP link; use photo capture/upload and typed commands. Localhost camera/microphone testing remains available on the Mac. Actual reachability from the phone also depends on the network and Mac firewall.
+
 ## Create a pet
 
 Choose one of two paths in the fullscreen studio:

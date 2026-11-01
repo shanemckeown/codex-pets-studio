@@ -56,3 +56,9 @@ Record actual work, evidence and failures; never invent a problem to fill a temp
 ### Sources
 
 Current official OpenAI Decisions, image-generation and speech-to-text guides; Google MediaPipe Face Landmarker Web guide and model card; the installed desktop hatch-pet animation contract/validator; the original 3D Gaussian Splatting project for covariance-rendering background. Exact links, installed versions, licences and artwork provenance are in `ATTRIBUTION.md`.
+
+## Capture framing and phone access
+
+- Added a forehead-to-chin oval over live webcam and photo review, with a dimmed surround. The guide follows the displayed media bounds, including letterboxed landscape webcams, and is never baked into the captured photo.
+- Enabled explicit local-network testing with `npm run dev:lan`, documented native mobile camera versus HTTPS in-page camera behavior, and verified the LAN page, JS/model/WASM assets and a real Decisions request.
+- Validation: TypeScript passed; browser upload/review at 375×667 and simulated 640×480 webcam at 390×844 kept the guide within the visible image with no page overflow. These were synthetic fixtures, not physical camera hardware tests.
