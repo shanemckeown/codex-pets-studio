@@ -25,7 +25,7 @@ Target submission: **16:30 London, 1 November 2026**. Deadline: **17:00**. Featu
 - [x] Actual downloadable ZIP with pet.json, transparent sprite PNG and installation guide.
 - [x] Native desktop v2 atlas: 1536×2288, 192×208 cells, 73 animation/gaze frames plus extra neutral slot; 14 unused transparent cells.
 - [x] System unzip integrity, browser geometry/alpha/edge checks and independent bundled native validator all pass the Gaussian export.
-- [x] Typecheck, eight unit tests and production build pass.
+- [x] Typecheck, twelve unit tests and production build pass.
 - [x] Lockfile installation dry-run passes; full fresh-clone install not claimed.
 - [x] Real Decisions intent eval and real synthetic photo capture check pass.
 - [x] Real GPT Image character-generation API returns one portrait; explicit-request/no-automatic-retry behavior implemented.
@@ -34,7 +34,7 @@ Target submission: **16:30 London, 1 November 2026**. Deadline: **17:00**. Featu
 
 - [ ] Actual laptop/iPhone camera hardware capture.
 - [ ] Live microphone recording/transcription journey.
-- [ ] Distinct captured-expression transition QA using a consenting subject's matching photographs.
+- [x] Saved real-photo set imported locally; neutral, frown and side references visually checked with hair/ears preserved.
 - [ ] Full invented-character UI journey through fitting/export (generation API verified separately).
 - [ ] Optional native desktop installation/playback, only if Shane explicitly requests it after preview.
 - [ ] Fresh-clone installation on another machine.

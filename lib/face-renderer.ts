@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import {meshIndices,type Landmark} from './studio';
 import {procedural,referenceFor,REST,type Captures,type ShotId,type Pose} from './pet';
 import {createGaussianSurface} from './gaussian-surface';
+import {prepareHeadPortraits,createHeadPortraitRenderer,type HeadPortrait} from './head-portrait';
 export type SurfaceMode='mesh'|'gaussian';
-export type FaceAsset={points:Landmark[];texture:THREE.Texture;image:HTMLImageElement;id:ShotId;approximate:boolean};
+export type FaceAsset={points:Landmark[];texture:THREE.Texture;image:HTMLImageElement;id:ShotId;approximate:boolean;portrait?:HeadPortrait};
 export type FaceAssets=Partial<Record<ShotId,FaceAsset>> & {front:FaceAsset};
 export async function loadFaces(captures:Captures):Promise<{assets:FaceAssets;indices:number[]}> {
   const {FaceLandmarker,FilesetResolver}=await import('@mediapipe/tasks-vision');
@@ -21,6 +22,7 @@ export async function loadFaces(captures:Captures):Promise<{assets:FaceAssets;in
   // MediaPipe's tessellation deliberately omits the eye/mouth interiors. Close those
   // photographic regions too; otherwise the texture becomes a mask with empty eyes.
   for(const contour of [[33,7,163,144,145,153,154,155,133,173,157,158,159,160,161,246],[263,249,390,373,374,380,381,382,362,398,384,385,386,387,388,466],[78,95,88,178,87,14,317,402,318,324,308,415,310,311,312,13,82,81,80,191]])for(let i=1;i<contour.length-1;i++)indices.push(contour[0],contour[i],contour[i+1]);
+  await prepareHeadPortraits(assets as FaceAssets);
   return {assets:assets as FaceAssets,indices};
 }
 function normalized(a:FaceAsset){const p=a.points,aspect=a.image.width/a.image.height,minY=Math.min(...p.map(v=>v.y)),maxY=Math.max(...p.map(v=>v.y));const cx=(p[234].x+p[454].x)/2,cy=(minY+maxY)/2,s=2.8/(maxY-minY),cz=p[1].z;return p.map(v=>new THREE.Vector3((v.x-cx)*s*aspect,-(v.y-cy)*s,-(v.z-cz)*s*aspect));}
@@ -30,6 +32,7 @@ function registerToFront(points:THREE.Vector3[],front:THREE.Vector3[]){
   return points.map(p=>{const v=p.clone().sub(from.origin);return to.origin.clone().addScaledVector(to.x,v.dot(from.x)*scale).addScaledVector(to.y,v.dot(from.y)*scale).addScaledVector(to.z,v.dot(from.z)*scale);});
 }
 export function createFaceRenderer(assets:FaceAssets,indices:number[],width:number,height:number,mode:SurfaceMode='mesh'){
+  if(assets.front.portrait)return createHeadPortraitRenderer(assets,width,height,mode);
   const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);renderer.setSize(width,height);renderer.setClearColor(0,0);renderer.outputColorSpace=THREE.SRGBColorSpace;
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(34,width/height,.1,100);camera.position.z=6.3;
   const geometry=new THREE.BufferGeometry();geometry.setIndex(indices);const positions=new Float32Array(468*3),uv=new Float32Array(468*2),uv2=new Float32Array(468*2);
@@ -52,4 +55,4 @@ export function createFaceRenderer(assets:FaceAssets,indices:number[],width:numb
   }
   return {canvas:renderer.domElement,render,splatCount:gaussians?.count??0,resize(w:number,h:number){width=w;height=h;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();},dispose(){gaussians?.dispose();geometry.dispose();material.dispose();renderer.dispose();renderer.domElement.remove();}};
 }
-export function disposeAssets(assets:FaceAssets){Object.values(assets).forEach(a=>a.texture.dispose());}
+export function disposeAssets(assets:FaceAssets){Object.values(assets).forEach(a=>{a.texture.dispose();a.portrait?.texture.dispose();});}
