@@ -10,7 +10,7 @@ Target submission: **16:30 London time, Sunday 1 November 2026**. Deadline: **17
 
 ## Repository and provenance
 
-- [ ] Public GitHub repository opens without signing in.
+- [x] [Public GitHub repository](https://github.com/shanemckeown/charted) opens without signing in (verified via unauthenticated HTTP and GitHub API on 1 November 2026).
 - [x] README explains the idea, intended users and current build status.
 - [x] Local environment files and credentials are ignored; `.env.example` contains no key.
 - [x] Pre-build planning/setup is distinguished from implementation during the event.
