@@ -11,7 +11,7 @@ export const SHOTS = [
   {id:'farRight',title:'Further right',hint:'Optional: turn a little further right, keeping part of both eyes visible.',required:false},
 ] as const;
 export type ShotId=typeof SHOTS[number]['id'];
-export type Capture={image:string;name:string;demo?:boolean;generated?:boolean};
+export type Capture={image:string;name:string;demo?:boolean;generated?:boolean;displayMirrored?:boolean};
 export type Captures=Partial<Record<ShotId,Capture>>;
 export const STATES=['idle','running-right','running-left','waving','jumping','failed','waiting','running','review'] as const;
 export type PetState=typeof STATES[number];
