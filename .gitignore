@@ -1,0 +1,30 @@
+# Dependencies and generated output
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Credentials and local environment files
+.env
+.env.*
+!.env.example
+.vercel/
+*.pem
+*.key
+credentials*.json
+service-account*.json
+
+# Local tooling and temporary output
+.DS_Store
+*.log
+playwright-report/
+test-results/
+.codex/
+.claude/
+
+# Keep private source material out of the public demo
+private/
+recordings/
